@@ -1,0 +1,4 @@
+[package]
+name = "rusql"
+version = "0.1.0"
+authors = ["Manuel Alonso <manuteali@gmail.com>"]
