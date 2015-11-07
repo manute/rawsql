@@ -22,8 +22,12 @@ fn it_should_parse_simple_query() {
         Err(why) => panic!(why)
     };
 
-    match res.get("get-names")  {
+    match res.get("simple")  {
         Some(_) => assert!(true),
         None => assert!(false)
     };
+
+    for (q, n) in res {
+        println!("{},{}", q, n);
+    }
 }

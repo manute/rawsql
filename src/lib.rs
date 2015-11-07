@@ -10,19 +10,27 @@ pub fn parse_file(path: &str) -> Result<HashMap<String, String>> {
     let mut data_file = String::new();
     try!(file.read_to_string(&mut data_file));
 
-    let lines: Vec<String> = data_file.lines().map(|l| l.trim().to_string()).collect();
+    let mut result = HashMap::new();
+    let mut name = String::new();
+    let mut query = String::new();
 
-    let names: Vec<String> = lines.clone().into_iter()
-        .filter(|l| l.starts_with(TAG_NAME))
-        .map(|l| l.replace(TAG_NAME,"").trim_left().to_string())
-        .collect();
-
-    let queries: Vec<String> = lines.clone().into_iter()
-        .filter(|l| !l.starts_with(TAG_NAME))
-        .map(|l| l.trim_left().to_string())
-        .collect();
-
-    let result: HashMap<String, String> = names.into_iter().zip(queries).collect();
+    for line in data_file.lines() {
+        if line.is_empty(){
+            continue;
+        }
+        if line.starts_with(TAG_NAME) {
+            name = line.replace(TAG_NAME,"").trim_left().to_string();
+            continue;
+        }
+        if !name.is_empty() {
+            query = query + " " + &line.trim_left().to_string();
+        }
+        if !query.is_empty() && line.ends_with(";") {
+            result.insert(name, query);
+            name  = "".to_string();
+            query = "".to_string();
+        }
+    }
 
     return Ok(result);
 }
