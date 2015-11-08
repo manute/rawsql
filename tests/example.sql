@@ -10,7 +10,7 @@ SELECT *
 FROM Customers c
 INNER JOIN CustomerAccounts ca
     ON ca.CustomerID = c.CustomerID
-    AND c.State = 'NY'
+    AND c.State = ?
 INNER JOIN Accounts a
     ON ca.AccountID = a.AccountID
-    AND a.Status = 1;
+    AND a.Status = ?;

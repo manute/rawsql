@@ -1,6 +1,6 @@
 extern crate rusql;
 
-use rusql::parse_file;
+use rusql::parser::parse_file;
 
 
 #[test]
@@ -14,7 +14,7 @@ fn it_when_file_not_exists() {
 }
 
 #[test]
-fn it_should_parse_simple_query() {
+fn it_should_parse_queries() {
     let q = parse_file("tests/example.sql");
 
     let res = match q {
@@ -27,7 +27,13 @@ fn it_should_parse_simple_query() {
         None => assert!(false)
     };
 
-    for (q, n) in res {
-        println!("{},{}", q, n);
-    }
+    match res.get("two-lines")  {
+        Some(_) => assert!(true),
+        None => assert!(false)
+    };
+
+    match res.get("complex")  {
+        Some(_) => assert!(true),
+        None => assert!(false)
+    };
 }
