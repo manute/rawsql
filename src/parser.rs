@@ -2,7 +2,7 @@ use std::io::{Read, Result};
 use std::fs::File;
 use std::collections::HashMap;
 
-static TAG_NAME: &'static str = "-- name :";
+static TAG_NAME: &'static str = "-- name:";
 
 pub fn parse_file(path: &str) -> Result<HashMap<String, String>> {
 
