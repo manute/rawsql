@@ -37,3 +37,27 @@ fn it_should_parse_queries() {
         None => assert!(false)
     };
 }
+
+#[test]
+fn it_should_parse_queries_with_count_params() {
+    let q = parse_file("tests/example.sql");
+
+    let res = match q {
+        Ok(r) => r,
+        Err(why) => panic!(why)
+    };
+
+    let s = match res.get("simple")  {
+        Some(r) => r,
+        None => panic!("no result on get query")
+    };
+
+    assert_eq!(s.params , 1);
+
+    let c = match res.get("complex")  {
+        Some(r) => r,
+        None => panic!("no result on get query")
+    };
+
+    assert_eq!(c.params , 2)
+}

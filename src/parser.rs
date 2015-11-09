@@ -4,12 +4,35 @@ use std::collections::HashMap;
 
 static TAG_NAME: &'static str = "-- name:";
 
-pub fn parse_file(path: &str) -> Result<HashMap<String, String>> {
+/// Struct query with the sql query and the number of params
+pub struct Query {
+    pub query: String,
+    pub params: i32
+}
+
+impl Query {
+    fn new(query: String) -> Query {
+        Query {
+            query: query.to_string(),
+            params: Query::get_params(query.to_string()),
+        }
+    }
+
+    ///Count the total params as '?'
+    fn get_params(query: String) -> i32 {
+        query.as_bytes().iter()
+            .filter(|&b| *b == 63 )
+            .fold(0, |acc, _| acc + 1 )
+    }
+}
+
+pub fn parse_file(path: &str) -> Result<HashMap<String, Query>> {
 
     let data_file = try!(read_file(path));
-    let mut result = HashMap::new();
+
     let mut name = String::new();
     let mut query = String::new();
+    let mut queries: HashMap<String, Query> = HashMap::new();
 
     for line in data_file.lines() {
         if line.is_empty(){
@@ -24,18 +47,18 @@ pub fn parse_file(path: &str) -> Result<HashMap<String, String>> {
             query = query + " " + &line.trim_left().to_string();
         }
         if !query.is_empty() && line.ends_with(";") {
-            result.insert(name, query);
+            queries.insert(name, Query::new(query));
             name  = "".to_string();
             query = "".to_string();
         }
     }
 
-    return Ok(result);
+    Ok(queries)
 }
 
 fn read_file(path: &str) -> Result<String> {
     let mut file = try!(File::open(&path));
     let mut data_file = String::new();
     try!(file.read_to_string(&mut data_file));
-    return Ok(data_file);
+    Ok(data_file)
 }
