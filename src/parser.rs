@@ -2,19 +2,19 @@ use std::io::{Read, Result};
 use std::fs::File;
 use std::collections::HashMap;
 
-static TAG_NAME: &'static str = "-- name:";
-
 /// Struct query with the sql query and the number of params
 pub struct Query {
     pub query: String,
-    pub params: i32
+    pub params: i32,
+    pub command: String
 }
 
 impl Query {
-    fn new(query: String) -> Query {
+    pub fn new(query: String, command: String) -> Query {
         Query {
             query: query.to_string(),
-            params: Query::get_params(query.to_string()),
+            params: Query::get_params(query),
+            command: command
         }
     }
 
@@ -26,30 +26,60 @@ impl Query {
     }
 }
 
+
+struct Parser {
+    name: String,
+    query: String,
+    command: String
+}
+
+impl Parser {
+    fn init() -> Parser {
+        Parser { name: String::new(), query: String::new(), command: String::new()}
+    }
+
+    fn tag_for(&mut self,line: &str, what: &str)  {
+        let tag = line.replace("--","").replace(what,"").replace(":","").trim_left().to_string();
+        if what == "name" {
+            self.name = tag.to_string();
+            self.query = "".to_string();
+            self.command = "".to_string();
+        }
+        if what == "command" {
+            self.command = tag ;
+        }
+
+    }
+    fn can_save_query(&mut self) -> bool {
+        !self.name.is_empty() && !self.command.is_empty()
+    }
+}
+
 pub fn parse_file(path: &str) -> Result<HashMap<String, Query>> {
 
     let data_file = try!(read_file(path));
 
-    let mut name = String::new();
-    let mut query = String::new();
+    let mut parser = Parser::init();
     let mut queries: HashMap<String, Query> = HashMap::new();
 
     for line in data_file.lines() {
         if line.is_empty(){
             continue;
         }
-        if line.starts_with(TAG_NAME) {
-            name = line.replace(TAG_NAME,"").trim_left().to_string();
-            query = "".to_string();
+        if is_tagged_for(line, "name") {
+            parser.tag_for(line, "name");
             continue;
         }
-        if !name.is_empty() {
-            query = query + " " + &line.trim_left().to_string();
+        if is_tagged_for(line, "command") {
+            parser.tag_for(line, "command");
+            continue;
         }
-        if !query.is_empty() && line.ends_with(";") {
-            queries.insert(name, Query::new(query));
-            name  = "".to_string();
-            query = "".to_string();
+        if parser.can_save_query(){
+            parser.query = parser.query + " " + &line.trim_left().to_string();
+        }
+        if !parser.query.is_empty() && line.ends_with(";") {
+            queries.insert(parser.name, Query::new(parser.query, parser.command));
+            parser = Parser::init()
         }
     }
 
@@ -61,4 +91,8 @@ fn read_file(path: &str) -> Result<String> {
     let mut data_file = String::new();
     try!(file.read_to_string(&mut data_file));
     Ok(data_file)
+}
+
+fn is_tagged_for(line: &str, what: &str) -> bool {
+    line.starts_with("--") && line.contains(what)
 }

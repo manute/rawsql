@@ -53,11 +53,14 @@ fn it_should_parse_queries_with_count_params() {
     };
 
     assert_eq!(s.params , 1);
+    assert_eq!(s.command , "query");
 
     let c = match res.get("complex")  {
         Some(r) => r,
         None => panic!("no result on get query")
     };
 
-    assert_eq!(c.params , 2)
+    assert_eq!(c.params , 2);
+    assert_eq!(c.command , "query");
+
 }
