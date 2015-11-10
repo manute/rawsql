@@ -1,30 +1,7 @@
 use std::io::{Read, Result};
 use std::fs::File;
 use std::collections::HashMap;
-
-/// Struct query with the sql query and the number of params
-pub struct Query {
-    pub query: String,
-    pub params: i32,
-    pub command: String
-}
-
-impl Query {
-    pub fn new(query: String, command: String) -> Query {
-        Query {
-            query: query.to_string(),
-            params: Query::get_params(query),
-            command: command
-        }
-    }
-
-    ///Count the total params as '?'
-    fn get_params(query: String) -> i32 {
-        query.as_bytes().iter()
-            .filter(|&b| *b == 63 )
-            .fold(0, |acc, _| acc + 1 )
-    }
-}
+use querybuilder::Query;
 
 
 struct Parser {
@@ -50,12 +27,15 @@ impl Parser {
         }
 
     }
+
     fn can_save_query(&mut self) -> bool {
         !self.name.is_empty() && !self.command.is_empty()
     }
 }
 
-pub fn parse_file(path: &str) -> Result<HashMap<String, Query>> {
+
+
+pub fn load_queries_from(path: &str) -> Result<HashMap<String, Query>> {
 
     let data_file = try!(read_file(path));
 

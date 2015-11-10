@@ -1,12 +1,12 @@
 extern crate rusql;
 
-use rusql::parser::parse_file;
+use rusql::parser::load_queries_from;
 
 
 #[test]
 #[should_panic]
 fn it_when_file_not_exists() {
-    let q = parse_file("tests/non_exist.sql");
+    let q = load_queries_from("tests/non_exist.sql");
     match q {
         Ok(r) => r,
         Err(why) => panic!(why)
@@ -15,7 +15,7 @@ fn it_when_file_not_exists() {
 
 #[test]
 fn it_should_parse_queries() {
-    let q = parse_file("tests/example.sql");
+    let q = load_queries_from("tests/example.sql");
 
     let res = match q {
         Ok(r) => r,
@@ -39,8 +39,8 @@ fn it_should_parse_queries() {
 }
 
 #[test]
-fn it_should_parse_queries_with_count_params() {
-    let q = parse_file("tests/example.sql");
+fn it_should_parse_queries_and_get_his_attributes() {
+    let q = load_queries_from("tests/example.sql");
 
     let res = match q {
         Ok(r) => r,
