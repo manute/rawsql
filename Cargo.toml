@@ -2,6 +2,17 @@
 name = "rusql"
 version = "0.1.0"
 authors = ["Manuel Alonso <manuteali@gmail.com>"]
+license = "MIT"
+description = "A rust library for reusing SQL"
+repository = "https://github.com/manute/rusql"
+#documentation = ""
+readme = "README.md"
+keywords = ["database", "sql"]
+
+
+[lib]
+name = "rusql"
+path = "src/lib.rs"
 
 [dev-dependencies]
 postgres = "0.10"
