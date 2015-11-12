@@ -13,6 +13,7 @@ keywords = ["database", "sql"]
 [lib]
 name = "rusql"
 path = "src/lib.rs"
+doctest = false
 
 [dev-dependencies]
 postgres = "0.10"
