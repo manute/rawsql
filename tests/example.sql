@@ -1,14 +1,11 @@
 -- name: simple
--- command: query
 SELECT * FROM table1 u where  u.name = ?;
 
 -- name: two-lines
--- command: exec
 Insert INTO table2
 SELECT * FROM table1;
 
 -- name: complex
--- command: query
 SELECT *
 FROM Customers c
 INNER JOIN CustomerAccounts ca
