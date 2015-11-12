@@ -1,3 +1,76 @@
+//! rusql is a rust library for abstract the sql code in one place and reuse it.
+//!
+//! Given a sql file stored for example in "examples/postgre.sql":
+//!
+//! ```sql,no_run
+//!
+//! -- name: drop-table-person
+//! DROP TABLE IF EXISTS "person";
+//!
+//! -- name: create-table-person
+//! CREATE TABLE "person" (id SERIAL PRIMARY KEY, name  VARCHAR NOT NULL, data BYTEA);
+//!
+//! -- name: insert-person
+//! INSERT INTO "person" (name, data) VALUES ($1, $2);
+//!
+//! -- name: select-all
+//! SELECT id, name, data FROM person;
+//!
+//! ```
+//!
+//! Use this lib for get each query associated to the "name" declared on the previous sql file:
+//!
+//! ```rust,no_run
+//!
+//! extern crate rusql;
+//! extern crate postgres;
+//!
+//! use rusql::Loader;
+//! use postgres::{Connection, SslMode};
+//!
+//! struct Person {
+//!     id: i32,
+//!     name: String,
+//!     data: Option<Vec<u8>>
+//! }
+//!
+//! fn main() {
+//!     let conn = Connection::connect("postgres://postgres:local@localhost", &SslMode::None).unwrap();
+//!
+//!     let queries = Loader::get_queries_from("examples/postgre.sql").unwrap().queries;
+//!
+//!     //Drop table
+//!     conn.execute(queries.get("drop-table-person").unwrap(), &[]).unwrap();
+//!
+//!     //Create table
+//!     conn.execute(queries.get("create-table-person").unwrap(), &[]).unwrap();
+//!
+//!     let me = Person {
+//!         id: 0,
+//!         name: "Manuel".to_string(),
+//!         data: None
+//!     };
+//!
+//!     //Insert into table
+//!     conn.execute(queries.get("insert-person").unwrap(),
+//!                  &[&me.name, &me.data]).unwrap();
+//!
+//!     //Select
+//!     let stmt = conn.prepare(queries.get("select-all").unwrap()).unwrap();
+//!     for row in stmt.query(&[]).unwrap() {
+//!         let person = Person {
+//!             id: row.get(0),
+//!             name: row.get(1),
+//!             data: row.get(2)
+//!         };
+//!         println!("Found person id : {}, name: {}", person.id, person.name);
+//!     }
+//! }
+//!
+//! ```
+#![doc(html_root_url="https://manute.github.io/rusql/doc/v0.1.0")]
+#![warn(missing_docs)]
+
 use std::io::{Read, Result};
 use std::fs::File;
 use std::collections::HashMap;
@@ -41,11 +114,14 @@ impl Parser {
     }
 }
 
+/// Loader the queries from file.
 pub struct Loader {
+    /// All queries founded in file
     pub queries: HashMap<String, String>
 }
 
 impl Loader {
+    ///Given a path of file it could retrieve the queries.
     pub fn get_queries_from(path: &str) -> Result<Loader> {
 
         let data_file = try!(read_file(path));
