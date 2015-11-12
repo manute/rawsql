@@ -14,3 +14,6 @@ INNER JOIN CustomerAccounts ca
 INNER JOIN Accounts a
     ON ca.AccountID = a.AccountID
     AND a.Status = ?;
+
+-- name: psql-insert
+INSERT INTO person (name, data) VALUES ($1, $2);
