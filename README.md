@@ -1,7 +1,10 @@
-# rusql
-A rust library for using sql and reusing it.
 
-*is heavily influenced by [yesql](https://github.com/krisajenkins/yesql) so many thanks @krisajenkins*
+# rusql
+A rust library for *using* and *reusing* SQL.
+
+[![Build Status](https://travis-ci.org/manute/rusql.svg?branch=master)](https://travis-ci.org/manute/rusql)
+
+*is heavily influenced by [yesql](https://github.com/krisajenkins/yesql) (many thanks @krisajenkins)*
 
 ## TODO
 You can integrate rusql into your project through the [releases on crates.io](https://crates.io/crates/rusql):
@@ -24,7 +27,7 @@ The sql file need to be with this format :
 -- name: insert-person
 INSERT INTO "person" (name, data) VALUES ($1, $2);
 
--- name: select-all-person
+-- name: select-persons
 SELECT id, name, data FROM person;
 
 ```
@@ -35,49 +38,23 @@ Also is necessary at the end of the query the ";".
 ```rust
 
 extern crate rusql;
-extern crate postgres;
 
 use rusql::Loader;
-use postgres::{Connection, SslMode};
-
-struct Person {
-    id: i32,
-    name: String,
-    data: Option<Vec<u8>>
-}
 
 
 fn main() {
-    let conn = Connection::connect("postgres://postgres:local@localhost", &SslMode::None).unwrap();
 
     let queries = Loader::get_queries_from("examples/postgre.sql").unwrap().queries;
 
-    //Drop table
-    conn.execute(queries.get("drop-table-person").unwrap(), &[]).unwrap();
+    //Insert query
+    let q-ìnsert = queries.get("insert-person").unwrap();
 
-    //Create table
-    conn.execute(queries.get("create-table-person").unwrap(), &[]).unwrap();
+    println!("{}", q-insert);
 
-    let me = Person {
-        id: 0,
-        name: "Manuel".to_string(),
-        data: None
-    };
+    //Select query
+    let q-select = queries.get("select-persons").unwrap();
+    println!("{}", q-select);
 
-    //Insert into table
-    conn.execute(queries.get("insert-person").unwrap(),
-                 &[&me.name, &me.data]).unwrap();
-
-    //Select
-    let stmt = conn.prepare(queries.get("select-all").unwrap()).unwrap();
-    for row in stmt.query(&[]).unwrap() {
-        let person = Person {
-            id: row.get(0),
-            name: row.get(1),
-            data: row.get(2)
-        };
-        println!("Found person id : {}, name: {}", person.id, person.name);
-    }
 }
 
 ```
