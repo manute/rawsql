@@ -1,7 +1,7 @@
-extern crate rusql;
+extern crate rawsql;
 extern crate postgres;
 
-use rusql::Loader;
+use rawsql::Loader;
 use postgres::{Connection, SslMode};
 
 struct Person {

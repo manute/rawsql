@@ -1,19 +1,19 @@
 
-# rusql
+# rawsql
 A rust library for *using* and *reusing* SQL.
 
-[![Build Status](https://travis-ci.org/manute/rusql.svg?branch=master)](https://travis-ci.org/manute/rusql)
+[![Build Status](https://travis-ci.org/manute/rawsql.svg?branch=master)](https://travis-ci.org/manute/rawsql)
 
 *is heavily influenced by [yesql](https://github.com/krisajenkins/yesql) (many thanks @krisajenkins)*
 
-###[DOC](http://manute.github.io/rusql/rusql/index.html)###
+###[DOC](http://manute.github.io/rawsql/rawsql/index.html)###
 
 ## TODO
-You can integrate rusql into your project through the [releases on crates.io](https://crates.io/crates/rusql):
+You can integrate rawsql into your project through the [releases on crates.io](https://crates.io/crates/rawsql):
 ```toml
 # Cargo.toml
 [dependencies]
-rusql = "0.1.0"
+rawsql = "0.1.0"
 ```
 
 ## Overview
@@ -39,9 +39,9 @@ Also is necessary at the end of the query the ";".
 
 ```rust
 
-extern crate rusql;
+extern crate rawsql;
 
-use rusql::Loader;
+use rawsql::Loader;
 
 
 fn main() {
@@ -61,7 +61,7 @@ fn main() {
 
 ```
 
-See the full example [here](https://github.com/manute/rusql/tree/master/examples)
+See the full example [here](https://github.com/manute/rawsql/tree/master/examples)
 
 ## License
 

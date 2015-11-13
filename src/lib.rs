@@ -1,4 +1,4 @@
-//! rusql is a rust library for abstract the sql code in one place and reuse it.
+//! rawsql is a rust library for abstract the sql code in one place and reuse it.
 //!
 //! Given a sql file stored for example in "examples/postgre.sql":
 //!
@@ -22,10 +22,10 @@
 //!
 //! ```rust,no_run
 //!
-//! extern crate rusql;
+//! extern crate rawsql;
 //! extern crate postgres;
 //!
-//! use rusql::Loader;
+//! use rawsql::Loader;
 //! use postgres::{Connection, SslMode};
 //!
 //! struct Person {
@@ -68,7 +68,7 @@
 //! }
 //!
 //! ```
-#![doc(html_root_url="https://manute.github.io/rusql")]
+#![doc(html_root_url="https://manute.github.io/rawsql")]
 #![warn(missing_docs)]
 
 use std::io::{Read, Result};
