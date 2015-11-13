@@ -8,7 +8,6 @@ A rust library for *using* and *reusing* SQL.
 
 ###[DOC](http://manute.github.io/rawsql/rawsql/index.html)###
 
-## TODO
 You can integrate rawsql into your project through the [releases on crates.io](https://crates.io/crates/rawsql):
 ```toml
 # Cargo.toml
