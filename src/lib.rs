@@ -114,14 +114,14 @@ impl Parser {
     }
 }
 
-/// Loader the queries from file.
+/// All queries info
 pub struct Loader {
-    /// All queries founded in file
+    /// Queries as key(name) and value(query)
     pub queries: HashMap<String, String>
 }
 
 impl Loader {
-    ///Given a path of file it could retrieve the queries.
+    ///Given a path of file retrieve all the queries.
     pub fn get_queries_from(path: &str) -> Result<Loader> {
 
         let data_file = try!(read_file(path));
@@ -149,6 +149,7 @@ impl Loader {
     }
 }
 
+/// Read file data into string from path
 fn read_file(path: &str) -> Result<String> {
     let mut file = try!(File::open(&path));
     let mut data_file = String::new();
