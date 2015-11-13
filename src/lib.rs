@@ -68,7 +68,7 @@
 //! }
 //!
 //! ```
-#![doc(html_root_url="https://manute.github.io/rusql/doc/v0.1.0")]
+#![doc(html_root_url="https://manute.github.io/rusql")]
 #![warn(missing_docs)]
 
 use std::io::{Read, Result};

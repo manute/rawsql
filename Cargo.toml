@@ -5,7 +5,7 @@ authors = ["Manuel Alonso <manuteali@gmail.com>"]
 license = "MIT"
 description = "A rust library for reusing SQL"
 repository = "https://github.com/manute/rusql"
-#documentation = ""
+documentation = "http://manute.github.io/rusql/rusql/index.html"
 readme = "README.md"
 keywords = ["database", "sql"]
 

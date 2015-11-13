@@ -6,6 +6,8 @@ A rust library for *using* and *reusing* SQL.
 
 *is heavily influenced by [yesql](https://github.com/krisajenkins/yesql) (many thanks @krisajenkins)*
 
+###[DOC](http://manute.github.io/rusql/rusql/index.html)###
+
 ## TODO
 You can integrate rusql into your project through the [releases on crates.io](https://crates.io/crates/rusql):
 ```toml
