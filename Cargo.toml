@@ -1,7 +1,7 @@
 [package]
 name = "rawsql"
 version = "0.1.0"
-authors = ["Manuel Alonso <manuteali@gmail.com>"]
+authors = ["Manuel Alonso <manuel.alonso@protonmail.com>"]
 license = "MIT"
 description = "A rust library for reusing SQL"
 repository = "https://github.com/manute/rawsql"
