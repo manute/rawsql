@@ -21,7 +21,8 @@ You need to write SQL and you need to reuse it. You don't want to duplicate the 
 *This lib does not execute any sql in the DB.*
 
 ## Usage
-The basic idea is that put all the sql code in their sql files and then this libs parse this files and get all the queries.
+The basic idea is separate the sql from the code to put into sql files. With this you gain sql powers and the ability to write sql only once that runs on your DB (your dba could modify these files too)
+
 The sql file need to be with this format :
 
 ```sql
@@ -33,7 +34,7 @@ SELECT id, name, data FROM person;
 
 ```
 Note the comment with the  **-- name: ** , it will be the key value for get each query.
-Also is necessary at the end of the query the ";".
+Also is necessary at the end of the query ";".
 
 
 ```rust
