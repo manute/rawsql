@@ -1,6 +1,6 @@
 language: rust
 rust:
-- 1.4.0
+- stable
 script:
 - cargo test
 after_success: |-
