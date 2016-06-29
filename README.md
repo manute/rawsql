@@ -49,12 +49,12 @@ fn main() {
     let queries = Loader::get_queries_from("examples/postgre.sql").unwrap().queries;
 
     //Insert query
-    let q-ìnsert = queries.get("insert-person").unwrap();
+    let q_ìnsert = queries.get("insert-person").unwrap();
 
     println!("{}", q-insert);
 
     //Select query
-    let q-select = queries.get("select-persons").unwrap();
+    let q_select = queries.get("select-persons").unwrap();
     println!("{}", q-select);
 
 }
