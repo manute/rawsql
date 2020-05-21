@@ -6,7 +6,7 @@ A rust library for *using* and *reusing* SQL.
 
 *is heavily influenced by [yesql](https://github.com/krisajenkins/yesql) (many thanks @krisajenkins)*
 
-###[DOC](http://manute.github.io/rawsql/rawsql/index.html)###
+### [DOC](http://manute.github.io/rawsql/rawsql/index.html) ###
 
 You can integrate rawsql into your project through the [releases on crates.io](https://crates.io/crates/rawsql):
 ```toml
@@ -21,9 +21,9 @@ You need to write SQL and you need to reuse it. You don't want to duplicate the 
 *This lib does not execute any sql in the DB.*
 
 ## Usage
-The basic idea is separate the sql from the code to put into sql files. With this you gain sql powers and the ability to write sql only once that runs on your DB (your dba could modify these files too)
+The basic idea is to separate the sql part from the code and put it into its own sql files. With this approach, you gain sql powers and the ability to write sql only once that runs on your DB (your dba could modify these files too)
 
-The sql file need to be with this format :
+The sql file needs to be with this format :
 
 ```sql
 -- name: insert-person
@@ -33,8 +33,10 @@ INSERT INTO "person" (name, data) VALUES ($1, $2);
 SELECT id, name, data FROM person;
 
 ```
-Note the comment with the  **-- name: ** , it will be the key value for get each query.
-Also is necessary at the end of the query ";".
+
+> comment with the  **-- name: ** , it will be the key value for getting each query.
+
+> the ";" will be needed at the end of the query.
 
 
 ```rust
