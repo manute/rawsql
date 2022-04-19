@@ -75,6 +75,7 @@ use std::{
     collections::HashMap,
     fs::File,
     io::{Read, Result},
+    ops::Deref,
 };
 
 struct Parser {
@@ -124,12 +125,16 @@ impl Parser {
 }
 
 /// All queries info
-pub struct Loader {
-    /// Queries as key(name) and value(query)
-    pub queries: HashMap<String, String>,
-}
+/// Queries as key(name) and value(query)
+pub struct Loader(pub HashMap<String, String>);
 
-//TODO: use pub struct Loader(pub HashMap<String, String>) + implement deref
+impl Deref for Loader {
+    type Target = HashMap<String, String>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 impl Loader {
     ///Given a string content retrieve all the queries.
@@ -153,7 +158,7 @@ impl Loader {
                 parser = Parser::init()
             }
         }
-        Ok(Loader { queries })
+        Ok(Loader(queries))
     }
 
     ///Given a path of file retrieve all the queries.
@@ -194,21 +199,21 @@ mod tests {
             Err(why) => panic!("{}", why),
         };
 
-        let q_simple = match res.queries.get("simple") {
+        let q_simple = match res.get("simple") {
             Some(r) => r,
             None => panic!("no result on get query"),
         };
 
         assert_eq!(q_simple, "SELECT * FROM table1 u where  u.name = ?;");
 
-        let q_2_lines = match res.queries.get("two-lines") {
+        let q_2_lines = match res.get("two-lines") {
             Some(r) => r,
             None => panic!("no result on get query"),
         };
 
         assert_eq!(q_2_lines, "Insert INTO table2 SELECT * FROM table1;");
 
-        let q_complex = match res.queries.get("complex") {
+        let q_complex = match res.get("complex") {
             Some(r) => r,
             None => panic!("no result on get query"),
         };
@@ -220,7 +225,7 @@ mod tests {
              a.Status = ?;"
         );
 
-        let q_psql = match res.queries.get("psql-insert") {
+        let q_psql = match res.get("psql-insert") {
             Some(r) => r,
             None => panic!("no result on get query"),
         };
