@@ -1,6 +1,6 @@
 [package]
 name = "rawsql"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Manuel Alonso <manuel.alonso@protonmail.com>"]
 license = "MIT"
 description = "A rust library for reusing SQL"
@@ -16,4 +16,4 @@ path = "src/lib.rs"
 doctest = false
 
 [dev-dependencies]
-postgres = "0.10"
+postgres = "0.19.2"

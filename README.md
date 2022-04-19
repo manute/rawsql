@@ -12,7 +12,7 @@ You can integrate rawsql into your project through the [releases on crates.io](h
 ```toml
 # Cargo.toml
 [dependencies]
-rawsql = "0.1.0"
+rawsql = "0.1.1"
 ```
 
 ## Overview
@@ -51,7 +51,7 @@ fn main() {
     let queries = Loader::get_queries_from("examples/postgre.sql").unwrap().queries;
 
     //Insert query
-    let qìnsert = queries.get("insert-person").unwrap();
+    let qinsert = queries.get("insert-person").unwrap();
 
     println!("{}", qinsert);
 
