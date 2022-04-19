@@ -94,19 +94,19 @@ impl Parser {
         let tag = line
             .replace("--", "")
             .replace("name", "")
-            .replace(":", "")
-            .trim_left()
+            .replace(':', "")
+            .trim_start()
             .to_string();
-        self.name = tag.to_string();
+        self.name = tag;
         self.query = "".to_string();
     }
 
     fn build_query(&mut self, line: &str) {
-        let q = line.trim_left();
+        let q = line.trim_start();
         if self.query.is_empty() {
             self.query = q.to_string();
         } else {
-            self.query = self.query.to_string() + " " + &q;
+            self.query = self.query.to_string() + " " + q
         }
     }
 
@@ -115,7 +115,7 @@ impl Parser {
     }
 
     fn is_finishing_query(&mut self, line: &str) -> bool {
-        !self.query.is_empty() && line.ends_with(";")
+        !self.query.is_empty() && line.ends_with(';')
     }
 
     fn is_tagged_name(&mut self, line: &str) -> bool {
