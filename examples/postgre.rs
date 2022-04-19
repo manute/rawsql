@@ -1,7 +1,7 @@
 extern crate postgres;
 extern crate rawsql;
 
-use postgres::{Connection, SslMode};
+use postgres::{Client, NoTls};
 use rawsql::Loader;
 
 struct Person {
@@ -11,7 +11,7 @@ struct Person {
 }
 
 fn main() {
-    let conn = Connection::connect("postgres://postgres:local@localhost", &SslMode::None).unwrap();
+    let mut conn = Client::connect("postgres://postgres:local@localhost", NoTls).unwrap();
 
     let queries = Loader::get_queries_from("examples/postgre.sql").unwrap();
 
@@ -34,8 +34,7 @@ fn main() {
         .unwrap();
 
     // Select
-    let stmt = conn.prepare(queries.get("select-all").unwrap()).unwrap();
-    for row in stmt.query(&[]).unwrap() {
+    for row in conn.query(queries.get("select-all").unwrap(), &[]).unwrap() {
         let person = Person {
             id: row.get(0),
             name: row.get(1),
