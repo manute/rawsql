@@ -37,7 +37,7 @@
 //! fn main() {
 //!     let conn = Connection::connect("postgres://postgres:local@localhost", &SslMode::None).unwrap();
 //!
-//!     let queries = Loader::get_queries_from("examples/postgre.sql").unwrap().queries;
+//!     let queries = Loader::read_queries_from("examples/postgre.sql").unwrap().queries;
 //!
 //!     //Drop table
 //!     conn.execute(queries.get("drop-table-person").unwrap(), &[]).unwrap();
@@ -68,13 +68,14 @@
 //! }
 //!
 //! ```
-#![doc(html_root_url="https://manute.github.io/rawsql")]
+#![doc(html_root_url = "https://manute.github.io/rawsql")]
 #![warn(missing_docs)]
 
-use std::io::{Read, Result};
-use std::fs::File;
-use std::collections::HashMap;
-
+use std::{
+    collections::HashMap,
+    fs::File,
+    io::{Read, Result},
+};
 
 struct Parser {
     name: String,
@@ -90,11 +91,12 @@ impl Parser {
     }
 
     fn tag_name(&mut self, line: &str) {
-        let tag = line.replace("--", "")
-                      .replace("name", "")
-                      .replace(":", "")
-                      .trim_left()
-                      .to_string();
+        let tag = line
+            .replace("--", "")
+            .replace("name", "")
+            .replace(":", "")
+            .trim_left()
+            .to_string();
         self.name = tag.to_string();
         self.query = "".to_string();
     }
@@ -127,16 +129,15 @@ pub struct Loader {
     pub queries: HashMap<String, String>,
 }
 
+//TODO: use pub struct Loader(pub HashMap<String, String>) + implement deref
+
 impl Loader {
-    ///Given a path of file retrieve all the queries.
-    pub fn get_queries_from(path: &str) -> Result<Loader> {
-
-        let data_file = try!(read_file(path));
-
+    ///Given a string content retrieve all the queries.
+    pub fn get_queries_from(content: &str) -> Result<Loader> {
         let mut parser = Parser::init();
         let mut queries: HashMap<String, String> = HashMap::new();
 
-        for line in data_file.lines() {
+        for line in content.lines() {
             if line.is_empty() {
                 continue;
             }
@@ -152,19 +153,23 @@ impl Loader {
                 parser = Parser::init()
             }
         }
-        Ok(Loader { queries: queries })
+        Ok(Loader { queries })
+    }
+
+    ///Given a path of file retrieve all the queries.
+    pub fn read_queries_from(path: &str) -> Result<Loader> {
+        let data_file = read_file(path)?;
+        Loader::get_queries_from(&data_file)
     }
 }
 
 /// Read file data into string from path
 fn read_file(path: &str) -> Result<String> {
-    let mut file = try!(File::open(&path));
+    let mut file = File::open(&path)?;
     let mut data_file = String::new();
-    try!(file.read_to_string(&mut data_file));
+    file.read_to_string(&mut data_file)?;
     Ok(data_file)
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -173,20 +178,20 @@ mod tests {
     #[test]
     #[should_panic]
     fn it_when_file_not_exists() {
-        let loaded = Loader::get_queries_from("examples/non_exist.sql");
+        let loaded = Loader::read_queries_from("examples/non_exist.sql");
         match loaded {
             Ok(r) => r,
-            Err(why) => panic!(why),
+            Err(why) => panic!("{}", why),
         };
     }
 
     #[test]
     fn it_should_parse_queries() {
-        let loaded = Loader::get_queries_from("examples/example.sql");
+        let loaded = Loader::read_queries_from("examples/example.sql");
 
         let res = match loaded {
             Ok(r) => r,
-            Err(why) => panic!(why),
+            Err(why) => panic!("{}", why),
         };
 
         let q_simple = match res.queries.get("simple") {
@@ -208,10 +213,12 @@ mod tests {
             None => panic!("no result on get query"),
         };
 
-        assert_eq!(q_complex,
-                   "SELECT * FROM Customers c INNER JOIN CustomerAccounts ca ON ca.CustomerID = \
-                    c.CustomerID AND c.State = ? INNER JOIN Accounts a ON ca.AccountID = \
-                    a.AccountID AND a.Status = ?;");
+        assert_eq!(
+            q_complex,
+            "SELECT * FROM Customers c INNER JOIN CustomerAccounts ca ON ca.CustomerID = \
+             c.CustomerID AND c.State = ? INNER JOIN Accounts a ON ca.AccountID = a.AccountID AND \
+             a.Status = ?;"
+        );
 
         let q_psql = match res.queries.get("psql-insert") {
             Some(r) => r,
