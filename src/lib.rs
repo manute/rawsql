@@ -111,14 +111,17 @@ impl Parser {
         }
     }
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_starting_query(&mut self) -> bool {
         !self.name.is_empty()
     }
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_finishing_query(&mut self, line: &str) -> bool {
         !self.query.is_empty() && line.ends_with(';')
     }
 
+    #[allow(clippy::wrong_self_convention)]
     fn is_tagged_name(&mut self, line: &str) -> bool {
         line.starts_with("--") && line.contains("name")
     }
