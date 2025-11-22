@@ -15,4 +15,4 @@ path = "src/lib.rs"
 doctest = false
 
 [dev-dependencies]
-postgres = "0.19.2"
+postgres = "0.19.12"
