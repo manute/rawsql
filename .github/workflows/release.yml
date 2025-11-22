@@ -36,8 +36,8 @@ jobs:
             target
           key: cargo-cache-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install cargo-deny
-        run: cargo install cargo-deny --locked
+      - name: Install cargo-deny v0.17.0
+        run: cargo install cargo-deny --version 0.17.0 --locked
 
       - name: Run CI checks
         run: |
