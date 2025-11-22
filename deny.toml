@@ -20,11 +20,4 @@ exceptions = [
 unknown-registry = "deny"
 unknown-git = "deny"
 
-[vulnerability]
-deny = ["*"]
-
-[yanked]
-deny = ["*"]
-
 [advisories]
-# optional: ignore certain advisories
