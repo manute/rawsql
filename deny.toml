@@ -21,6 +21,5 @@ unknown-registry = "deny"
 unknown-git = "deny"
 
 [advisories]
-unmaintained = "workspace"
-ignore = [
-]
+# Example: check for crates yanked or with security advisories
+warn-on = ["yanked", "security"]

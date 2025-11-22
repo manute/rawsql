@@ -36,8 +36,16 @@ jobs:
             target
           key: cargo-cache-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install cargo-deny v0.17.0
-        run: cargo install cargo-deny --version 0.17.0 --locked
+      - name: Install cargo-deny (fast)
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
+
+      - name: Cache cargo-deny DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/advisory-db
+          key: cargo-deny-advisory-db-${{ hashFiles('**/Cargo.toml') }}
 
       - name: Run CI checks
         run: |
