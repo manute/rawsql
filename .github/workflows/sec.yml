@@ -10,17 +10,21 @@ on:
 
 jobs:
   cargo-deny:
-    name: Cargo Deny
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install cargo-deny (fast)
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
 
-      - name: Install cargo-deny
-        run: cargo install cargo-deny
+      - name: Cache advisory DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/advisory-db
+          key: advisory-db-v1
 
       - name: Run cargo-deny
-        run: cargo deny check
+        run: cargo deny check licenses bans advisories sources
