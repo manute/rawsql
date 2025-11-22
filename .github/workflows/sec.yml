@@ -10,6 +10,7 @@ on:
 
 jobs:
   cargo-deny:
+    name: Cargo Deny
     runs-on: ubuntu-latest
 
     steps:

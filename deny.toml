@@ -1,14 +1,26 @@
 # deny.toml
 [licenses]
+# We want really high confidence when inferring licenses from text
+confidence-threshold = 0.93
 allow = [
-    "MIT"
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "MIT",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "Zlib",
+]
+exceptions = [
+    # Use exceptions for these as they only have a single user
+    { allow = ["CDLA-Permissive-2.0"], crate = "webpki-roots" },
 ]
 
-# Reject copyleft unless explicitly added:
-copyleft = "deny"
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
 
-# Warn instead of error if we don't know the license
-unlicensed = "warn"
-
-# Ensure all dependencies have a license
-allow-osi-fsf-free = "both"
+[advisories]
+unmaintained = "workspace"
+ignore = [
+]
