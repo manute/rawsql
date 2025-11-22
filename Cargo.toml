@@ -8,7 +8,6 @@ repository = "https://github.com/manute/rawsql"
 documentation = "http://manute.github.io/rawsql/rawsql/index.html"
 readme = "README.md"
 keywords = ["database", "sql"]
-rust-version = "1.70"
 
 [lib]
 name = "rawsql"
