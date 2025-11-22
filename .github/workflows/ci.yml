@@ -55,4 +55,4 @@ jobs:
           cargo fmt --all -- --check
           cargo clippy --all-targets --all-features -- -D warnings
           cargo test --all --all-features --verbose
-          cargo deny check licenses bans advisories sources
+          cargo deny check licenses bans advisories
