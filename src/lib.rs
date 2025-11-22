@@ -173,7 +173,7 @@ impl Loader {
 
 /// Read file data into string from path
 fn read_file(path: &str) -> Result<String> {
-    let mut file = File::open(&path)?;
+    let mut file = File::open(path)?;
     let mut data_file = String::new();
     file.read_to_string(&mut data_file)?;
     Ok(data_file)
