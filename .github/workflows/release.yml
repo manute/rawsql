@@ -1,0 +1,49 @@
+name: Manual Release
+
+# Manual workflow dispatch only
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Manual Release to crates.io
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://crates.io/crates/rawsql
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust 1.81
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.81.0
+          components: rustfmt, clippy
+          override: true
+
+      - name: Verify rustc
+        run: rustc --version
+
+      - name: Cache Cargo registry & target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-cache-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Run CI checks
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --all-targets --all-features -- -D warnings
+          cargo test --all --all-features --verbose
+          cargo deny check licenses bans advisories sources
+
+      - name: Publish to crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish --allow-dirty
