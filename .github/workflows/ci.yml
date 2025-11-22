@@ -1,8 +1,12 @@
 name: CI
 
 on:
-  push: { branches: ["**"] }
-  pull_request: { branches: ["**"] }
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
 
 jobs:
   ci:
