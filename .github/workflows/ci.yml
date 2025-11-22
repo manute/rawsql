@@ -17,10 +17,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Rust 1.81
-        uses: dtolnay/rust-toolchain@1.81.0
+      # Force correct Rust version
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
+          profile: minimal
+          toolchain: 1.81.0
           components: rustfmt, clippy
+          override: true
+
+      # Verify rustc version
+      - name: Check rustc version
+        run: rustc --version
 
       - name: Cache Cargo registry & target
         uses: actions/cache@v4
