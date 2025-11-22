@@ -20,6 +20,11 @@ exceptions = [
 unknown-registry = "deny"
 unknown-git = "deny"
 
+[vulnerability]
+deny = ["*"]
+
+[yanked]
+deny = ["*"]
+
 [advisories]
-# Example: check for crates yanked or with security vulnerabilities
-warn-on = ["yanked", "vulnerability"]
+# optional: ignore certain advisories
