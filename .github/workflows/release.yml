@@ -36,6 +36,9 @@ jobs:
             target
           key: cargo-cache-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
+      - name: Install cargo-deny
+        run: cargo install cargo-deny --locked
+
       - name: Run CI checks
         run: |
           cargo fmt --all -- --check
