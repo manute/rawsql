@@ -2,7 +2,7 @@
 # rawsql
 A rust library for *using* and *reusing* SQL.
 
-[![Build Status](https://travis-ci.org/manute/rawsql.svg?branch=master)](https://travis-ci.org/manute/rawsql) [![Latest Version](https://img.shields.io/crates/v/rawsql.svg)](https://crates.io/crates/rawsql)
+[![Latest Version](https://img.shields.io/crates/v/rawsql.svg)](https://crates.io/crates/rawsql)
 
 *is heavily influenced by [yesql](https://github.com/krisajenkins/yesql) (many thanks @krisajenkins)*
 
