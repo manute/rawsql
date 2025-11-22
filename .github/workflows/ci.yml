@@ -17,11 +17,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Rust (stable)
-        uses: dtolnay/rust-toolchain@stable
+      # Force correct Rust version
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.81.0
+          components: rustfmt, clippy
+          override: true
 
-      - name: Cache Cargo
-        uses: Swatinem/rust-cache@v2
+      # Verify rustc version
+      - name: Check rustc version
+        run: rustc --version
+
+      - name: Cache Cargo registry & target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-cache-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Format check
         run: cargo fmt --all -- --check
@@ -29,5 +45,5 @@ jobs:
       - name: Clippy (deny warnings)
         run: cargo clippy --all-targets --all-features -- -D warnings
 
-      - name: Unit tests
+      - name: Run tests
         run: cargo test --all --all-features --verbose

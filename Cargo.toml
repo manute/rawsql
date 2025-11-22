@@ -9,11 +9,10 @@ documentation = "http://manute.github.io/rawsql/rawsql/index.html"
 readme = "README.md"
 keywords = ["database", "sql"]
 
-
 [lib]
 name = "rawsql"
 path = "src/lib.rs"
 doctest = false
 
 [dev-dependencies]
-postgres = "0.19.2"
+postgres = "0.19.12"
