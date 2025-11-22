@@ -67,7 +67,8 @@ See the full example [here](https://github.com/manute/rawsql/tree/master/example
 
 ## License
 
-Licensed under MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+Licensed under:
+    - MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
 
 ### Why not execute SQL this lib?
 In rust there is not yet a general driver like *JDBC* or go's *database/sql* so I decide to abstract first the parser of sql files to use directly with the libs already exists for each DB.

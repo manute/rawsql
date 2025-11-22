@@ -1,0 +1,14 @@
+# deny.toml
+[licenses]
+allow = [
+    "MIT"
+]
+
+# Reject copyleft unless explicitly added:
+copyleft = "deny"
+
+# Warn instead of error if we don't know the license
+unlicensed = "warn"
+
+# Ensure all dependencies have a license
+allow-osi-fsf-free = "both"
