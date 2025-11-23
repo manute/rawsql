@@ -12,7 +12,7 @@ You can integrate rawsql into your project through the [releases on crates.io](h
 ```toml
 # Cargo.toml
 [dependencies]
-rawsql = "0.1.1"
+rawsql = "0.2.0"
 ```
 
 ## Overview
