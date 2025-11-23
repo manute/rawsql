@@ -41,12 +41,6 @@ jobs:
         with:
           tool: cargo-deny
 
-      - name: Cache cargo-deny DB
-        uses: actions/cache@v4
-        with:
-          path: ~/.cargo/advisory-db
-          key: cargo-deny-advisory-db-${{ hashFiles('**/Cargo.toml') }}
-
       - name: Run CI checks
         run: |
           cargo fmt --all -- --check
