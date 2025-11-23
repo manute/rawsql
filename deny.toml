@@ -9,5 +9,3 @@ allow = [
 [sources]
 unknown-registry = "deny"
 unknown-git = "deny"
-
-[advisories]
